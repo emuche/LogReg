@@ -1,0 +1,3 @@
+homes/show
+</body>
+</html>
