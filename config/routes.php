@@ -5,7 +5,7 @@ $router = new Framework\Router;
 $router->add('/', ["controller" => "homes", "method" => "index"]);
 $router->add('/register', ["controller" => "homes", "method" => "register"]);
 $router->add('/forgot-password', ["controller" => "homes", "method" => "forgot-password"]);
-$router->add('/create', ["controller" => "homes", "method" => "register-new-user"]);
+$router->add('/register-new-user', ["controller" => "homes", "method" => "register-new-user"]);
 $router->add('/test', ["controller" => "homes", "method" => "test"]);
 
 // Admin/Users Routes

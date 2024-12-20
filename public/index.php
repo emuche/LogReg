@@ -10,7 +10,6 @@ spl_autoload_register(function(string $class_name){
 $dotenv = new Framework\Dotenv;
 $dotenv->load(ROOT_PATH."/.env");
 
-
 set_error_handler("Framework\ErrorHandler::handleError");
 set_exception_handler("Framework\ErrorHandler::handleException");
 

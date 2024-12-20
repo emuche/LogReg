@@ -28,9 +28,6 @@ class MVCTemplateViewer implements TemplateViewerInterface
         $code = $this->replacePHP($code);
         $code = $this->replaceVariables($code);
 
-        
-       
-
         extract($data, EXTR_SKIP);
         ob_start();
         eval("?>$code");

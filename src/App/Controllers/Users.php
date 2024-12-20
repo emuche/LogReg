@@ -122,7 +122,7 @@ class Users extends Controller
         $update = $this->request->post;
         
 
-        if($this->usersModel->update($id, $update)){
+        if($this->usersModel->updateRow($id, $update)){
             header("Location: {$_ENV['URL_ROOT']}/users/show/{$id}");
             exit;
         }else{
@@ -146,7 +146,7 @@ class Users extends Controller
     public function destroy(string $id): Response
     {
         $this->getUser( $id);
-        $this->usersModel->delete($id);
+        $this->usersModel->deleteRow($id);
         header("Location: {$_ENV['URL_ROOT']}/users/index");
         exit;
     }

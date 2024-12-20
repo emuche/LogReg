@@ -13,10 +13,6 @@ abstract class Model
     {
     }
 
-    protected function validate(array|object $data): void
-    {
-
-    }
     protected function addError(string $field, string $message): void
     {
         $this->errors[$field] = $message;
@@ -85,11 +81,10 @@ abstract class Model
 
     public function insert(array|object $data): bool
     {
-        $this->validate($data);
-
         if(!empty($this->errors)){
             return false;
         }
+        $data = (array) $data;
         $conn = $this->database->getConnection();
         $fields = implode(",", array_keys($data));
         $placeholders = implode(",", array_fill(0, count($data), "?"));
@@ -110,8 +105,6 @@ abstract class Model
     }
     public function updateRow(string $id, array|object $data): bool
     {
-        $this->validate($data);
-
         if(!empty($this->errors)){
             return false;
         }

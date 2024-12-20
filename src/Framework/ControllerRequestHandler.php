@@ -8,7 +8,7 @@ class ControllerRequestHandler implements RequestHandlerInterface
                                 private string $method,
                                 private array $args)
     {
-    }
+        }
     public function handle(Request $request) : Response
     {
         $this->controller->setRequest($request);
