@@ -5,21 +5,22 @@ use App\Models\User;
 use Framework\Controller;
 use Framework\Exceptions\PageNotFoundException;
 use Framework\Response;
+use Framework\Helpers\Auth;
 
 class Users extends Controller
 {
+    private $user;
+
     public function __construct(private User $usersModel)
     {
+        Auth::failRedirect();
+        $this->user = $this->usersModel->getUser();
     }
 
-    public function index(): Response         
+    public function dashboard(): Response         
     {
-        $users = $this->usersModel->findAll();
-        $total = $this->usersModel->rowCount();
-
-        return $this->view('users/index.mvc', [
-            "total" => $total,
-            "users" => $users,
+        return $this->view('users/dashboard.mvc', [
+            'user' => $this->user,
         ]);
 
     }
@@ -135,7 +136,7 @@ class Users extends Controller
 
     public function getUser(string $id): array|object
     {
-        $user = $this->usersModel->find($id);
+        $user = $this->usersModel->findById($id);
 
         if($user === false){
             throw new PageNotFoundException("User Not found");

@@ -6,12 +6,20 @@ $router->add('/', ["controller" => "homes", "method" => "index"]);
 $router->add('/register', ["controller" => "homes", "method" => "register"]);
 $router->add('/forgot-password', ["controller" => "homes", "method" => "forgot-password"]);
 $router->add('/register-new-user', ["controller" => "homes", "method" => "register-new-user"]);
+$router->add('/log-in-user', ["controller" => "homes", "method" => "log-in-user"]);
+$router->add('/recover-account', ["controller" => "homes", "method" => "recover-account"]);
+$router->add('/logout', ["controller" => "homes", "method" => "log-out-user"]);
+$router->add('/contact-us', ["controller" => "homes", "method" => "contact-us"]);
+$router->add('/about-us', ["controller" => "homes", "method" => "about-us"]);
+$router->add('/404', ["controller" => "homes", "method" => "e404"]);
+$router->add('/500', ["controller" => "homes", "method" => "e500"]);
 $router->add('/test', ["controller" => "homes", "method" => "test"]);
 
 // Admin/Users Routes
 $router->add('/admin/{controller}/{method}', ["namespace" => "Admin"]);
 
 // Users Routes
+$router->add("/dashboard", ["controller" => "users", "method" => "dashboard"]);
 $router->add("/users/profile/{username:\w+([-+.+@']\w+)*}", ["controller" => "users", "method" => "profile"]);
 $router->add('/users/word/{word:[\w-]+}', ["controller" => "users", "method" => "word"]);
 $router->add("/users/emailexists/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}", ["controller" => "users", "method" => "emailExists"]);

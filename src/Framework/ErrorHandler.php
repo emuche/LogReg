@@ -3,27 +3,24 @@ declare(strict_types=1);
 namespace Framework;
 use ErrorException;
 use Framework\Exceptions\PageNotFoundException;
+use Framework\Controller;
 use Throwable; 
-class ErrorHandler
+class ErrorHandler extends Controller
 {
-    public static function handleError(
-        int $errno,
-        string $errstr,
-        string $errfile,
-        int $errline
-    
-        ): bool {
+
+    public static function handleError(int $errno, string $errstr, string $errfile, int $errline): bool 
+    {
         throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
-    public static function handleException(Throwable $exception): void
+    public static function handleException(Throwable $exception)
     {
         if($exception instanceof PageNotFoundException){
             http_response_code(404);
-            $template = "404";
+            $template = "404.mvc";
         }else{
             http_response_code(500);
-            $template = "500";
+            $template = "500.mvc";
         }
     
         if($_ENV["SHOW_ERRORS"]){

@@ -2,19 +2,14 @@
 declare(strict_types= 1);
 namespace Framework\Helpers;
 
-use Framework\Dotenv;
-
-
 class Redirect{
-
-	public static function to($location = '/index', $params = []){
-                
+	public static function to($location = 'index', $params = []): never
+        {
                 if(($location == 'index') || ($location == 'home') || ($location == '')){
                         $location = '';
                 }elseif($location == '404'){
                         $location = 'home/error404';
                 }
-
                 $url = '';
                 $params = (array)$params;
                 if(count($params) > 0){
@@ -26,7 +21,6 @@ class Redirect{
                                 }
                         }
                 }
-
                 header('location: '.$_ENV['URL_ROOT'].$location.$url);
                 exit();
 	}
@@ -50,7 +44,6 @@ class Redirect{
                                 }
                         }
                 }
-
                 return $_ENV['URL_ROOT'].$location.$url;
         }
 
@@ -64,8 +57,7 @@ class Redirect{
         public static function post($url = ''): void  
         {
                 if(empty($_POST)){
-                self::to("/".$url);
+                self::to($url);
                 }
         }
 }
-?>

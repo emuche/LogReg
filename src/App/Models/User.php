@@ -3,11 +3,28 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Framework\Model;
+use Framework\Helpers\Session;
 
 class User extends Model
 {
     // protected $table = "user";
 
+    
+    public function getUser(): object|bool
+    {
+        if(Session::exists('id')){
+            return $this->findById(Session::get('id'));
+        }
+        return false;
+    }
+    public function login($data): bool|object
+    {
+        $user = $this->findByField('email', $data->email);
+        if(!empty($user) && password_verify($data->password, $user->password)){
+            return $user;
+        }
+        return false;
+    }
     public function validateRegistration(array|object $data): void
     {
         $data = (object)$data;
@@ -20,11 +37,7 @@ class User extends Model
         }
 
         if(filter_var($data->email, FILTER_VALIDATE_EMAIL) === false){
-            $this->addError("email", "Email field is required");
-        }
-
-        if($data->password != $data->confirm_password){
-            $this->addError("password", "Password does not match");
+            $this->addError("email", "Enter a valid email address");
         }
 
         if(preg_match("#^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z]{6,}$#" , $data->password) === 0){
@@ -32,4 +45,42 @@ class User extends Model
         }
     }
 
+    public function validateLogIn(array|object $data): void
+    {
+        $data = (object)$data;
+        if(filter_var($data->email, FILTER_VALIDATE_EMAIL) === false){
+            $this->addError("email", "Enter a valid email address");
+        }
+
+        if(empty($data->password)){
+            $this->addError("password", "Password field is required");
+        }
+
+        if(empty($this->errors) && !$this->fieldValueExists("email",$data->email)){
+            $this->addError("login", "Credentials do not match");
+        }
+
+        if(empty($this->errors) && empty($this->login($data))){
+            $this->addError("login", "Credentials do not match");
+        }
+    }
+
+    public function validateRecoverAccount(string $email): void
+    {
+        if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+            $this->addError("email", "Enter a valid email address");
+        }
+        if(empty($this->errors) && empty($this->findByField('email', $email))){
+            $this->addError("email", "This email is not registered");
+        }
+    }
+
+    public function resetAccount($email): bool
+    {
+        $user = $this->findByField("email", $email);
+        if(!empty($user)){
+            return true;
+        }
+        return false;
+    }
 }

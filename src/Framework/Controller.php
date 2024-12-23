@@ -26,7 +26,6 @@ abstract class Controller
     protected function view(string $template, array $data = []) : Response
     {
         $this->response->setBody($this->viewer->render($template, $data));
-
         return $this->response;
     }
 

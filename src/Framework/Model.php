@@ -69,12 +69,28 @@ abstract class Model
         return  $result;
     }
 
-    public function find(string $id): object|bool
+    public function findById(string|int $id): object|bool
     {
         $conn = $this->database->getConnection();
         $sql = "SELECT * FROM {$this->getTable()} WHERE id = :id AND deleted_on IS NULL";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function findByField(string $field, $value): object|bool
+    {
+        $conn = $this->database->getConnection();
+        $sql = "SELECT * FROM {$this->getTable()} WHERE {$field} = :field AND deleted_on IS NULL";
+        $type = match(gettype($value)){
+            "boolean" => PDO::PARAM_BOOL,
+            "integer" => PDO::PARAM_INT,
+            "NULL" => PDO::PARAM_NULL,
+            default => PDO::PARAM_STR
+        };
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(":field", $value, $type);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
     }

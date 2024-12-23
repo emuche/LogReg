@@ -2,7 +2,7 @@
 declare(strict_types= 1);
 namespace Framework\Helpers;
 
-session_start();
+session_status() === PHP_SESSION_ACTIVE ?: session_start();
 class Session{
 
 	public static function exists($name): bool
@@ -24,7 +24,8 @@ class Session{
 		return false;
 	}
 
-	public static function get($name){
+	public static function get($name): array|bool|string|int
+	{
 		if(is_array($name)){
 			$result = [];
 			foreach($name as $value){
@@ -42,6 +43,7 @@ class Session{
 				return false;
 			}
 		}
+		return false;
 	}
 
 	public static function delete($name):bool
@@ -62,7 +64,26 @@ class Session{
 		return false;
 	}
 
-	public static function flash($name){
+	public static function destroy(): bool
+	{
+		$_SESSION = [];
+		if (ini_get("session.use_cookies")) {
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 42000,
+				$params["path"], $params["domain"],
+				$params["secure"], $params["httponly"]
+			);
+		}
+		return session_destroy();
+	}
+
+	public static function regenerate(): bool
+	{
+		return session_regenerate_id(true);
+	}
+
+	public static function flash($name): array|bool|int|string
+	{
 		if(self::exists($name)){
 			$session = self::get($name);
 			self::delete($name);
@@ -78,7 +99,4 @@ class Session{
 		}
 		return false;
 	}
-
-} 
-
-?>
+}

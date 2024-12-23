@@ -17,11 +17,13 @@ class Dotenv
     private static function config(): void
     {
         $config = [
-            'CSV_PATH' => dirname(__DIR__)."/file/csv/",
+            'CSV_PATH' => dirname(__DIR__)."/files/csv/",
+            'MEDIA_PATH' => dirname(__DIR__)."/files/media/",
         ];
         
         foreach($config as $key => $value) {
             $_ENV[$key] = $value;
+            define($key, $value); 
         }
     }
 }

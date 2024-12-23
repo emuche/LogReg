@@ -13,7 +13,7 @@ $dotenv->load(ROOT_PATH."/.env");
 set_error_handler("Framework\ErrorHandler::handleError");
 set_exception_handler("Framework\ErrorHandler::handleException");
 
-
+session_start();
 $routes = require_once ROOT_PATH."/config/routes.php";
 $container = require_once ROOT_PATH."/config/services.php";
 $middleware = require_once ROOT_PATH."/config/middleware.php"; 
